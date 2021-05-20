@@ -11,8 +11,18 @@ export class CalendarComponent implements OnInit {
   daysInMonthCounter: number = 0;
   currentYear: number = 0;
   currentMonth: monthsOfYear;
-  monthName: string = '';
   days: IDay[] = [];
+  daysInWeek = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday"]
+
+  months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "December"];
+
 
   constructor() { }
 
@@ -27,10 +37,14 @@ export class CalendarComponent implements OnInit {
       if (day === 0) {
         this.setDaysLeftAtBeginin(currentDate);
       }
-
-      this.days.push({
-        date: new Date(this.currentYear, this.currentMonth, day + 1)
-      });
+      else {
+        let date = new Date(this.currentYear, this.currentMonth, day + 1);
+        this.days.push({
+          date: date,
+          dayNumber: <daysOfWeek>date.getDay(),
+          dayDateNumber: date.getDate()
+        });
+      }
 
       if (day === this.daysInMonthCounter - 1) {
         this.setDaysLeftAtEnd(currentDate);
@@ -39,10 +53,10 @@ export class CalendarComponent implements OnInit {
   }
 
   private setDaysLeftAtBeginin(initialDate: Date) {
-    let currentDay = initialDate.getDay();
-    let isMonday = initialDate.getDay() === 1;
-    let daysAdded: number = 1;
-    while (!isMonday) {
+    let currentDay = initialDate.getDay() + 1;
+    let isSunday = initialDate.getDay() === 0;
+
+    while (!isSunday) {
       currentDay--;
       let newDate = new Date();
       newDate.setDate(initialDate.getDate() - currentDay)
@@ -51,25 +65,26 @@ export class CalendarComponent implements OnInit {
         date: newDate
       });
 
-      isMonday = currentDay === 1;
-      daysAdded++;
+      isSunday = currentDay === 0;
     }
   }
 
 
   private setDaysLeftAtEnd(initialDate: Date) {
-    let currentDay = initialDate.getDay();
-    let isSunday = initialDate.getDay() === 7;
-    while (!isSunday) {
+    let currentDay = initialDate.getDay() + 1;
+    let isSaturday = initialDate.getDay() === 6;
+    let counter = 1;
+    while (!isSaturday) {
+      isSaturday = currentDay === 6;
       currentDay++;
       let newDate = new Date();
-      newDate.setDate(initialDate.getDate() - currentDay)
+      newDate.setDate(initialDate.getDate() + counter)
 
       this.days.push({
         date: newDate
       });
 
-      isSunday = currentDay === 7;
+      counter++;
     }
   }
 
@@ -77,5 +92,9 @@ export class CalendarComponent implements OnInit {
     const daysInMonth = new Date(this.currentYear, monthNumber + 1, 0).getDate();
 
     return daysInMonth;
+  }
+
+  getMonthName(): string {
+    return this.months[<number>this.currentMonth];
   }
 }

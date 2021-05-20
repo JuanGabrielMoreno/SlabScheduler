@@ -1,5 +1,16 @@
-<div class="calendar-container">
-    <div class="day-container" *ngFor="let day of days;">
-        {{day.date}}
+<div class="component-container">
+    <div class="mat-title title">
+        {{getMonthName()}}
+    </div>
+    <div class="calendar-container">
+        
+        <div class="day-name-container mat-body-1" *ngFor="let day of daysInWeek;">
+            {{day}}
+        </div>
+        
+        <div class="day-container" *ngFor="let day of days;">
+            <span>{{day.date.getDate()}}</span>
+            
+        </div>
     </div>
 </div>
