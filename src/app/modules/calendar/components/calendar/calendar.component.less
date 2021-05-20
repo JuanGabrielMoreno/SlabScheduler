@@ -1,0 +1,68 @@
+@border-color    : rgb(135 135 135);
+@cells-width     : 90px;
+@weekend-bg-color: rgb(243 243 243);
+@header-bg-color : rgb(47 117 179);
+
+.example-spacer {
+    flex: 1 1 auto;
+  }
+
+.component-container {
+    .title {
+        text-align: center;
+    }
+
+    .calendar-container {
+        margin         : 20px auto;
+        display        : flex;
+        flex-direction : row;
+        flex-wrap      : wrap;
+        justify-content: left;
+        width          : 650px;
+
+        .day-name-container {
+            width           : 91px;
+            height          : 18px;
+            color           : #FFF;
+            background-color: @header-bg-color;
+            text-align      : center;
+        }
+
+        .day-container {
+            border  : 1px solid @border-color;
+            width   : @cells-width;
+            height  : 70px;
+            overflow: hidden;
+
+            .day-number {
+                margin: 5px;
+            }
+
+        }
+
+        .disabled-day {
+            color: rgb(180 178 180);
+        }
+
+        .weekend-day {
+            background-color: @weekend-bg-color;
+        }
+
+        .day-container.weekend-day:not(.disabled-day) {
+            color:rgb(102 135 161);
+        }
+
+        .day-container:not(.disabled-day) {
+            font-weight: bold;
+        }
+
+        :nth-child(7n):not(.day-name-container) {
+            border-right: none;
+
+        }
+
+        :nth-child(1n +7):not(.day-name-container) {
+            border-left: none;
+        }
+    }
+}

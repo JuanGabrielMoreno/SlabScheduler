@@ -4,7 +4,8 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { CalendarComponent } from './modules/components/calendar/calendar.component';
+import { CalendarComponent } from './modules/calendar/components/calendar/calendar.component';
+import { MatButtonModule, MatIcon, MatIconModule, MatToolbarModule } from '@angular/material';
 
 @NgModule({
   declarations: [
@@ -15,7 +16,9 @@ import { CalendarComponent } from './modules/components/calendar/calendar.compon
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-
+    MatToolbarModule,
+    MatIconModule,
+    MatButtonModule
   ],
   providers: [],
   bootstrap: [AppComponent]

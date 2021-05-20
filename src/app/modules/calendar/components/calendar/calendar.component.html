@@ -1,0 +1,24 @@
+<mat-toolbar>
+    <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <span>Slab Scheduler</span>
+      <span class="example-spacer"></span>
+      <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon">
+        <mat-icon>add</mat-icon>
+      </button>
+</mat-toolbar>
+<div class="component-container">
+    <div class="mat-title title">
+        {{getMonthName()}}
+    </div>
+    <div class="calendar-container">
+        <div class="day-name-container mat-body-2" *ngFor="let day of daysInWeek;">
+            {{day}}
+        </div>
+        <div class="day-container" *ngFor="let day of days;" [ngClass]="getClass(day)">
+            <div class="day-number">{{day.dayDateNumber}}</div>
+            
+        </div>
+    </div>
+</div>
