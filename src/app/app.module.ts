@@ -5,12 +5,14 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CalendarComponent } from './modules/calendar/components/calendar/calendar.component';
-import { MatButtonModule, MatIcon, MatIconModule, MatToolbarModule } from '@angular/material';
+import { MatButtonModule, MatCardModule, MatDatepickerModule, MatDialogModule, MatFormFieldModule, MatIcon, MatIconModule, MatNativeDateModule, MatToolbarModule } from '@angular/material';
+import { ReminderModalComponent } from './modules/calendar/components/reminder-modal/reminder-modal.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    CalendarComponent
+    CalendarComponent,
+    ReminderModalComponent
   ],
   imports: [
     BrowserModule,
@@ -18,9 +20,17 @@ import { MatButtonModule, MatIcon, MatIconModule, MatToolbarModule } from '@angu
     BrowserAnimationsModule,
     MatToolbarModule,
     MatIconModule,
-    MatButtonModule
+    MatButtonModule,
+    MatDialogModule,
+    MatCardModule,
+    MatDatepickerModule,
+    MatFormFieldModule,
+    MatNativeDateModule
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents:[
+    ReminderModalComponent
+  ]
 })
 export class AppModule { }

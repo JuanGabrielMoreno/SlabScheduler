@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material';
 import { DatesProcessorService } from '../../services/dates-processor.service';
+import { ReminderModalComponent } from '../reminder-modal/reminder-modal.component';
 import { daysOfWeek, IDay, monthsOfYear } from './iday';
 
 @Component({
@@ -32,7 +34,9 @@ export class CalendarComponent implements OnInit {
     "July", "August", "September", "December"];
 
 
-  constructor(private datesProcessorService: DatesProcessorService) { }
+  constructor(
+    private datesProcessorService: DatesProcessorService,
+    public dialog: MatDialog) { }
 
   ngOnInit() {
     this.currentMonth = 4;
@@ -55,4 +59,17 @@ export class CalendarComponent implements OnInit {
     }
     return result;
   }
+
+  openDialog(): void {
+    const dialogRef = this.dialog.open(ReminderModalComponent, {
+      width: '250px',
+      //data: {name: this.name, animal: this.animal}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      //this.animal = result;
+    });
+  }
+
 }
