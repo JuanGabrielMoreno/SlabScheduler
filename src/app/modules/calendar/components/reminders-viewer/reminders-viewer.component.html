@@ -1,0 +1,12 @@
+<div class="reminders-viewer-container">
+    <div *ngFor="let reminder of day?.reminders" [ngStyle]="{'background-color': reminder?.color}" class="mat-small reminder-preview" >
+        <div>
+            {{getReminderDescription(reminder)}}
+        </div>
+        <div>
+            <button mat-icon-button (click)="openDialog(reminder)">
+                <mat-icon>edit</mat-icon>
+            </button>
+        </div>
+    </div>
+</div>

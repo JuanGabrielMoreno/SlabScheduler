@@ -19,9 +19,7 @@
         </div>
         <div class="day-container" *ngFor="let day of days;" [ngClass]="getClass(day)">
             <div class="day-number">{{day.dayDateNumber}}</div>
-            <ul>
-                <li *ngFor="let rem of day.reminders;">{{rem.title}}</li>
-            </ul>
+            <app-reminders-viewer [day]="day"></app-reminders-viewer>    
         </div>
     </div>
 </div>

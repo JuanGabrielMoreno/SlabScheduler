@@ -11,12 +11,14 @@ import { HttpClientModule } from '@angular/common/http';
 import { ColorPickerModule } from 'ngx-color-picker';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
+import { RemindersViewerComponent } from './modules/calendar/components/reminders-viewer/reminders-viewer.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     CalendarComponent,
-    ReminderModalComponent
+    ReminderModalComponent,
+    RemindersViewerComponent
   ],
   imports: [
     BrowserModule,

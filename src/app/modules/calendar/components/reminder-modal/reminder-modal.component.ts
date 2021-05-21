@@ -18,9 +18,9 @@ export class ReminderModalComponent implements OnInit {
   FormGrp: FormGroup = new FormGroup({});
   titleCtrl = new FormControl('', [Validators.required]);
   dateCtrl = new FormControl(null, [Validators.required]);
-  // let colorInput = new FormControl(null);
   hoursCtrl = new FormControl();
   minutesCtrl = new FormControl();
+  colorInput = new FormControl(null);
 
 
   hours: number[] = [];
@@ -38,7 +38,14 @@ export class ReminderModalComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+   
+
     this.loadFormControls();
+    if (this.data) { 
+      this.titleCtrl.setValue(this.data.reminder.title);
+      this.dateCtrl.setValue(this.data.reminder.date);
+      this.color = this.data.reminder.color;
+    }
     this.hours = this.getNumerArray(23);
     this.minutes = this.getNumerArray(59);
 
@@ -50,16 +57,10 @@ export class ReminderModalComponent implements OnInit {
   }
 
   loadFormControls(): void {
-    // let titleCtrl = new FormControl('', [Validators.required]);
-    // let dateCtrl = new FormControl(null, [Validators.required]);
-    // // let colorInput = new FormControl(null);
-    // let hoursCtrl = new FormControl();
-    // let minutesCtrl = new FormControl();
-
     this.FormGrp = new FormGroup({
       titleCtrl: this.titleCtrl,
       dateCtrl: this.dateCtrl,
-      //   colorInput: colorInput,
+      colorInput: this.colorInput,
       hoursCtrl: this.hoursCtrl,
       minutesCtrl: this.minutesCtrl
     });
@@ -80,12 +81,16 @@ export class ReminderModalComponent implements OnInit {
 
   onSubmit(form: NgForm) {
     const title = this.titleCtrl.value;
-    let date = new Date(this.dateCtrl.value);
+    const date = new Date(this.dateCtrl.value);
     date.setHours(this.hoursCtrl.value, this.minutesCtrl.value);
+    const color = this.color;
 
     let reminder: IReminder = {
-      cityCode: '', color: '', countryCode: '', date: date, title: title
-
+      cityCode: '',
+      countryCode: '',
+      color: color,
+      date: date,
+      title: title
     };
 
     this.dialogRef.close(reminder);

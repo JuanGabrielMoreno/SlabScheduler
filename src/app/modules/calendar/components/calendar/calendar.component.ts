@@ -74,8 +74,6 @@ export class CalendarComponent implements OnInit {
 
   addReminder(reminder: IReminder) {
     const reminderDate = new Date(reminder.date);
-    // reminderDate.setHours(0);
-    // reminderDate.setMinutes(0);
     const day = this.days.find(d => d.date.getFullYear() === reminderDate.getFullYear() && d.date.getMonth() === reminderDate.getMonth() && d.date.getDate() === reminderDate.getDate());
     day.reminders = day.reminders || [];
     day.reminders.push(reminder);

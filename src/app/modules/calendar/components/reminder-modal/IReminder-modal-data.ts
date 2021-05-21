@@ -1,5 +1,5 @@
-import { IDay } from "../calendar/IDay";
+import { IReminder } from "../calendar/IRemainder";
 
 export interface IReminderModalData {
-    day: IDay
+    reminder: IReminder
 }
