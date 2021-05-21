@@ -4,18 +4,20 @@
     </mat-card-header>
 
     <mat-card-content>
-        <form #form="ngForm" (ngSubmit)="onSubmit(form)" [formGroup]="FormGrp">
-            <mat-form-field class="example-full-width">
-                <mat-label>Reminder Title</mat-label>
-                <input formControlName="titleCtrl" name="title" matInput placeholder="Title for the reminder">
-            </mat-form-field>
-            <mat-form-field appearance="fill">
-                <mat-label>Choose a date</mat-label>
-                <input matInput [matDatepicker]="picker" formControlName="dateCtrl">
-                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                <mat-datepicker #picker></mat-datepicker>
-            </mat-form-field>
-            <div class="time-picker">
+        <div class="reminder-form-container">
+            <form #form="ngForm" (ngSubmit)="onSubmit(form)" [formGroup]="FormGrp">
+                <mat-form-field class="form-field">
+                    <mat-label>Reminder Title</mat-label>
+                    <input matInput formControlName="titleCtrl" name="title" maxlength="30"
+                        placeholder="Title for the reminder">
+                </mat-form-field>
+                <mat-form-field appearance="fill" class="datepicker">
+                    <mat-label>Choose a date</mat-label>
+                    <input matInput [matDatepicker]="picker" formControlName="dateCtrl">
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+
                 <mat-form-field appearance="fill">
                     <mat-label>HH</mat-label>
                     <mat-select formControlName="hoursCtrl">
@@ -29,12 +31,14 @@
                     </mat-select>
                 </mat-form-field>
 
-            </div>
-            <mat-form-field appearance="fill">
-                <input matInput formControlName="colorInput" [(colorPicker)]="color" [style.background]="color"
-                    placeholder="Select color" />
-            </mat-form-field>
-        </form>
+
+                <mat-form-field appearance="fill">
+                    <input matInput formControlName="colorInput" [(colorPicker)]="color" [style.background]="color"
+                        placeholder="Select color" />
+                </mat-form-field>
+            </form>
+        </div>
+
 
     </mat-card-content>
     <mat-card-actions>

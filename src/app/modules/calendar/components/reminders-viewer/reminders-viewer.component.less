@@ -2,18 +2,23 @@
     .reminder-preview {
         display       : flex;
         flex-direction: row;
-        height: 20px;
+        height        : 20px;
+
         mat-icon {
-            font-size: 15px;
+            font-size : 15px;
             margin-top: -20px;
         }
 
-        div{
-            text-overflow : ellipsis;
-            text-justify: distribute;
-            white-space: nowrap;
-            overflow: hidden;
-            max-width: 60px;
+        mat-form-field {
+            width: 100% ;
+        }
+
+        div {
+            text-overflow: ellipsis;
+            text-justify : distribute;
+            white-space  : nowrap;
+            overflow     : hidden;
+            max-width    : 60px;
         }
     }
 }
