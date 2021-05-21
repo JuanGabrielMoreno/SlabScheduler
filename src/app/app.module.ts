@@ -5,8 +5,12 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CalendarComponent } from './modules/calendar/components/calendar/calendar.component';
-import { MatButtonModule, MatCardModule, MatDatepickerModule, MatDialogModule, MatFormFieldModule, MatIcon, MatIconModule, MatNativeDateModule, MatToolbarModule } from '@angular/material';
+import { MatButtonModule, MatCardModule, MatDatepickerModule, MatDialogModule, MatFormFieldModule, MatIcon, MatIconModule, MatInputModule, MatNativeDateModule, MatSelectModule, MatToolbarModule } from '@angular/material';
 import { ReminderModalComponent } from './modules/calendar/components/reminder-modal/reminder-modal.component';
+import { HttpClientModule } from '@angular/common/http';
+import { ColorPickerModule } from 'ngx-color-picker';
+import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -25,7 +29,13 @@ import { ReminderModalComponent } from './modules/calendar/components/reminder-m
     MatCardModule,
     MatDatepickerModule,
     MatFormFieldModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    MatInputModule,
+    MatSelectModule,
+    HttpClientModule,
+    ColorPickerModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent],

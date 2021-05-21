@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { daysOfWeek, IDay, monthsOfYear } from '../components/calendar/iday';
+import { daysOfWeek, IDay, monthsOfYear } from '../components/calendar/IDay';
 
 @Injectable({
   providedIn: 'root'

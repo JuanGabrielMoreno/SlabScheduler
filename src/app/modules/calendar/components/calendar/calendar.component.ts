@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { DatesProcessorService } from '../../services/dates-processor.service';
 import { ReminderModalComponent } from '../reminder-modal/reminder-modal.component';
-import { daysOfWeek, IDay, monthsOfYear } from './iday';
+import { daysOfWeek, IDay, monthsOfYear } from './IDay';
+import { IReminder } from './IRemainder';
 
 @Component({
   selector: 'app-calendar',
@@ -11,7 +12,7 @@ import { daysOfWeek, IDay, monthsOfYear } from './iday';
 })
 export class CalendarComponent implements OnInit {
 
-  
+
   currentYear: number = 0;
   currentMonth: monthsOfYear;
   days: IDay[] = [];
@@ -57,19 +58,27 @@ export class CalendarComponent implements OnInit {
     if (day.monthNumber !== this.currentMonth) {
       result += 'disabled-day ';
     }
+
     return result;
   }
 
   openDialog(): void {
     const dialogRef = this.dialog.open(ReminderModalComponent, {
-      width: '250px',
-      //data: {name: this.name, animal: this.animal}
+      width: '320px',
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-      //this.animal = result;
+    dialogRef.afterClosed().subscribe((result: IReminder) => {
+      this.addReminder(result);
     });
+  }
+
+  addReminder(reminder: IReminder) {
+    const reminderDate = new Date(reminder.date);
+    // reminderDate.setHours(0);
+    // reminderDate.setMinutes(0);
+    const day = this.days.find(d => d.date.getFullYear() === reminderDate.getFullYear() && d.date.getMonth() === reminderDate.getMonth() && d.date.getDate() === reminderDate.getDate());
+    day.reminders = day.reminders || [];
+    day.reminders.push(reminder);
   }
 
 }
