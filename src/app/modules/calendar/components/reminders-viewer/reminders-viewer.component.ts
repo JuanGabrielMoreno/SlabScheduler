@@ -1,5 +1,6 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material';
+import { RemindersService } from '../../services/reminders.service';
 import { IDay } from '../calendar/IDay';
 import { IReminder } from '../calendar/IRemainder';
 import { ReminderModalComponent } from '../reminder-modal/reminder-modal.component';
@@ -9,24 +10,23 @@ import { ReminderModalComponent } from '../reminder-modal/reminder-modal.compone
   templateUrl: './reminders-viewer.component.html',
   styleUrls: ['./reminders-viewer.component.less']
 })
-export class RemindersViewerComponent implements OnChanges {
+export class RemindersViewerComponent implements OnInit {
 
   @Input()
   day: IDay;
 
   orderedReminders: IReminder[] = [];
 
-  constructor(public dialog: MatDialog) { }
+  constructor(
+    public dialog: MatDialog,
+    private remindersService: RemindersService) { }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (this.day.reminders) {
-      this.orderedReminders = this.day.reminders.sort((a, b) => {
-        return b.date.getTime() - a.date.getTime();
-      })
-    }
-  }
+
 
   ngOnInit() {
+    this.remindersService.reminderModified.subscribe(() => {
+      this.orderedReminders = this.day.reminders.sort((a: IReminder, b: IReminder) => <any>a.date - <any>b.date)
+    })
   }
 
   getReminderDescription(reminder: IReminder): string {

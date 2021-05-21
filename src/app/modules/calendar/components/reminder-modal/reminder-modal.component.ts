@@ -4,6 +4,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { Observable } from 'rxjs';
 import { GeoDataService } from '../../services/geo-data.service';
 import { ICountry } from '../../services/ICountry';
+import { RemindersService } from '../../services/reminders.service';
 import { IReminder } from '../calendar/IRemainder';
 import { IReminderModalData } from './IReminder-modal-data';
 
@@ -38,12 +39,15 @@ export class ReminderModalComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-   
+
+    
 
     this.loadFormControls();
-    if (this.data) { 
+    if (this.data) {
       this.titleCtrl.setValue(this.data.reminder.title);
       this.dateCtrl.setValue(this.data.reminder.date);
+      this.hoursCtrl.setValue(this.data.reminder.date.getHours());
+      this.minutesCtrl.setValue(this.data.reminder.date.getMinutes());
       this.color = this.data.reminder.color;
     }
     this.hours = this.getNumerArray(23);
@@ -93,6 +97,14 @@ export class ReminderModalComponent implements OnInit {
       title: title
     };
 
-    this.dialogRef.close(reminder);
+    if (this.data) {
+      this.data.reminder.title = reminder.title;
+      this.data.reminder.color = reminder.color;
+      this.data.reminder.date = reminder.date;
+
+      this.dialogRef.close();
+    } else {
+      this.dialogRef.close(reminder);
+    }
   }
 }
