@@ -7,5 +7,5 @@ import { IReminder } from "../components/calendar/IRemainder";
 })
 export class RemindersService { 
     reminderModified: Subject<IReminder> = new Subject<IReminder>();
-
+    removeReminder: Subject<IReminder> = new Subject<IReminder>();
 }

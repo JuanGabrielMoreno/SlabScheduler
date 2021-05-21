@@ -35,12 +35,13 @@ export class ReminderModalComponent implements OnInit {
   constructor(
     private countriesService: GeoDataService,
     public dialogRef: MatDialogRef<ReminderModalComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: IReminderModalData
+    @Inject(MAT_DIALOG_DATA) public data: IReminderModalData,
+    private remindersService: RemindersService
   ) { }
 
   ngOnInit() {
 
-    
+
 
     this.loadFormControls();
     if (this.data) {
@@ -90,6 +91,7 @@ export class ReminderModalComponent implements OnInit {
     const color = this.color;
 
     let reminder: IReminder = {
+      id: Date.now(),
       cityCode: '',
       countryCode: '',
       color: color,
@@ -97,14 +99,17 @@ export class ReminderModalComponent implements OnInit {
       title: title
     };
 
+
     if (this.data) {
       this.data.reminder.title = reminder.title;
       this.data.reminder.color = reminder.color;
+      reminder.previousDate = this.data.reminder.date;
       this.data.reminder.date = reminder.date;
+      reminder.id = this.data.reminder.id;
 
-      this.dialogRef.close();
-    } else {
-      this.dialogRef.close(reminder);
+      this.remindersService.removeReminder.next(reminder);
     }
+
+    this.dialogRef.close(reminder);
   }
 }

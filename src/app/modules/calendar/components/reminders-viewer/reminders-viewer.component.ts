@@ -25,7 +25,9 @@ export class RemindersViewerComponent implements OnInit {
 
   ngOnInit() {
     this.remindersService.reminderModified.subscribe(() => {
-      this.orderedReminders = this.day.reminders.sort((a: IReminder, b: IReminder) => <any>a.date - <any>b.date)
+      if (this.day.reminders) {
+        this.orderedReminders = this.day.reminders.sort((a: IReminder, b: IReminder) => <any>a.date - <any>b.date)
+      }
     })
   }
 
