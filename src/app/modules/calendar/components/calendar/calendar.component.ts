@@ -47,9 +47,11 @@ export class CalendarComponent implements OnInit {
     this.days = this.datesProcessorService.getDaysOfMonth(this.currentYear, this.currentMonth);
 
     this.remindersService.removeReminder.subscribe(r => {
-      this.removeReminder(r);
-      this.addReminder(r);
-      this.remindersService.reminderModified.next();
+      if (r.previousDate) {
+        this.removeReminder(r);
+        this.addReminder(r);
+        this.remindersService.reminderModified.next();
+      }
     });
   }
 
@@ -85,7 +87,7 @@ export class CalendarComponent implements OnInit {
     if (reminder.previousDate) {
       let day = this.days.find(d => d.date.getFullYear() === reminder.previousDate.getFullYear() && d.date.getMonth() === reminder.previousDate.getMonth() && d.date.getDate() === reminder.previousDate.getDate());
       day.reminders = day.reminders.filter(r => r.id !== reminder.id);
-      
+
     }
   }
 

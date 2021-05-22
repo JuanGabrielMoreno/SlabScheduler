@@ -7,6 +7,9 @@ import { ICountry } from '../../services/ICountry';
 import { RemindersService } from '../../services/reminders.service';
 import { IReminder } from '../calendar/IRemainder';
 import { IReminderModalData } from './IReminder-modal-data';
+import { debounceTime, map, mergeMap, startWith, switchMap } from 'rxjs/operators';
+import { WeatherService } from '../../services/weather.service';
+import { IWeatherData } from '../../services/IWeatherData';
 
 
 @Component({
@@ -22,12 +25,19 @@ export class ReminderModalComponent implements OnInit {
   hoursCtrl = new FormControl();
   minutesCtrl = new FormControl();
   colorInput = new FormControl(null);
+  countriesCtrl = new FormControl(null);
+  citiesCtrl = new FormControl(null);
 
 
   hours: number[] = [];
   minutes: number[] = [];
   countries: Observable<ICountry[]>;
   color: string;
+
+  filteredCountries: Observable<ICountry[]>;
+  filteredCities: Observable<ICountry[]>;
+
+  cityWeather: IWeatherData;
 
   @ViewChild('form', { static: true })
   form: NgForm;
@@ -36,13 +46,11 @@ export class ReminderModalComponent implements OnInit {
     private countriesService: GeoDataService,
     public dialogRef: MatDialogRef<ReminderModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: IReminderModalData,
-    private remindersService: RemindersService
+    private remindersService: RemindersService,
+    private weatherService: WeatherService
   ) { }
 
   ngOnInit() {
-
-
-
     this.loadFormControls();
     if (this.data) {
       this.titleCtrl.setValue(this.data.reminder.title);
@@ -54,11 +62,11 @@ export class ReminderModalComponent implements OnInit {
     this.hours = this.getNumerArray(23);
     this.minutes = this.getNumerArray(59);
 
+    this.filteredCountries = this.countriesCtrl.valueChanges.pipe(debounceTime(300),
+      switchMap(val => this.countriesService.searchCountries(val)));
 
-    this.countriesService.searchCountries('col').subscribe(x => {
-      console.log(x)
-
-    });
+    this.filteredCities = this.citiesCtrl.valueChanges.pipe(debounceTime(300),
+      switchMap(val => this.countriesService.searchCities(val, this.countriesCtrl.value)));
   }
 
   loadFormControls(): void {
@@ -67,7 +75,9 @@ export class ReminderModalComponent implements OnInit {
       dateCtrl: this.dateCtrl,
       colorInput: this.colorInput,
       hoursCtrl: this.hoursCtrl,
-      minutesCtrl: this.minutesCtrl
+      minutesCtrl: this.minutesCtrl,
+      countriesCtrl: this.countriesCtrl,
+      citiesCtrl: this.citiesCtrl
     });
   }
 
@@ -99,7 +109,6 @@ export class ReminderModalComponent implements OnInit {
       title: title
     };
 
-
     if (this.data) {
       this.data.reminder.title = reminder.title;
       this.data.reminder.color = reminder.color;
@@ -110,6 +119,19 @@ export class ReminderModalComponent implements OnInit {
       this.remindersService.removeReminder.next(reminder);
     }
 
+
+
     this.dialogRef.close(reminder);
+  }
+
+  queryWeather(selectedCity: ICountry) {
+    this.weatherService.getWheatherByCity(selectedCity.name).subscribe(x => {
+      console.log(x);
+      if (x.weather) {
+        if (x.weather.length > 0) {
+          this.cityWeather = x.weather[0];
+        }
+      }
+    });
   }
 }

@@ -28,7 +28,18 @@ export class GeoDataService {
         return this.httpClient.get<IGeoNameResponse>(url, { params: callParams }).pipe(map(x=>x.geonames));
     }
 
-    searchCities() {
+    searchCities(searchText:string, countryCode:string) {
+        const url = `http://api.geonames.org/searchJSON`;
+        let callParams = new HttpParams();
 
+        callParams = callParams.append('lang', 'en');
+        callParams = callParams.append('style', 'SHORT');
+        // callParams = callParams.append('q', 'PCLI');
+        callParams = callParams.append('maxRows', '15');
+        callParams = callParams.append('username', 'leirbagonerom');
+        callParams = callParams.append('country',countryCode);
+        callParams = callParams.append('name_startsWith', searchText);
+
+        return this.httpClient.get<IGeoNameResponse>(url, { params: callParams }).pipe(map(x=>x.geonames));
     }
 }

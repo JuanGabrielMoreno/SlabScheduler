@@ -36,9 +36,39 @@
                     <input matInput formControlName="colorInput" [(colorPicker)]="color" [style.background]="color"
                         placeholder="Select color" />
                 </mat-form-field>
+
+                <mat-form-field class="example-full-width">
+                    <mat-label>Country</mat-label>
+                    <input type="text" placeholder="Type to search" matInput formControlName="countriesCtrl"
+                        [matAutocomplete]="autoCountries">
+                    <mat-autocomplete autoActiveFirstOption #autoCountries="matAutocomplete">
+                        <mat-option *ngFor="let option of filteredCountries | async" [value]="option.countryCode">
+                            {{option.name}}
+                        </mat-option>
+                    </mat-autocomplete>
+                </mat-form-field>
+
+                <mat-form-field class="example-full-width">
+                    <mat-label>City</mat-label>
+                    <input type="text" placeholder="Type to search" matInput formControlName="citiesCtrl"
+                        [matAutocomplete]="autoCities">
+                    <mat-autocomplete autoActiveFirstOption #autoCities="matAutocomplete">
+                        <mat-option (click)="queryWeather(option)" *ngFor="let option of filteredCities | async"
+                            [value]="option.name">
+                            {{option.name}}
+                        </mat-option>
+                    </mat-autocomplete>
+                </mat-form-field>
+
             </form>
         </div>
-
+        <div class="weather-viewer" *ngIf="cityWeather != undefined">
+            <div>
+                <div class="mat-title weather-section-title">Weather </div>
+                <div class="main-title mat-body-1"><span class="mat-body-2">Main: </span>{{cityWeather.main}}</div>
+                <div class="description mat-caption">{{cityWeather.description}}</div>
+            </div>
+        </div>
 
     </mat-card-content>
     <mat-card-actions>
