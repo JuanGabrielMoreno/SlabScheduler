@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { MatDialog, MatDialogConfig } from '@angular/material';
+import { Subscription } from 'rxjs';
 import { DatesProcessorService } from '../../services/dates-processor.service';
 import { RemindersService } from '../../services/reminders.service';
 import { ReminderModalComponent } from '../reminder-modal/reminder-modal.component';
-import { daysOfWeek, IDay, monthsOfYear } from './IDay';
+import { IDay, monthsOfYear } from './IDay';
 import { IReminder } from './IRemainder';
 
 @Component({
@@ -11,8 +12,9 @@ import { IReminder } from './IRemainder';
   templateUrl: './calendar.component.html',
   styleUrls: ['./calendar.component.less']
 })
-export class CalendarComponent implements OnInit {
+export class CalendarComponent implements OnInit, OnDestroy {
 
+  subscriptions: Subscription = new Subscription();
 
   currentYear: number = 0;
   currentMonth: monthsOfYear;
@@ -33,7 +35,12 @@ export class CalendarComponent implements OnInit {
     "April",
     "May",
     "June",
-    "July", "August", "September", "December"];
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December"];
 
 
   constructor(
@@ -41,18 +48,26 @@ export class CalendarComponent implements OnInit {
     public dialog: MatDialog,
     private remindersService: RemindersService) { }
 
-  ngOnInit() {
-    this.currentMonth = 4;
-    this.currentYear = 2021;
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
+  }
+
+  ngOnInit(): void {
+    this.currentMonth = <monthsOfYear>new Date().getMonth();
+    this.currentYear = new Date().getFullYear();
     this.days = this.datesProcessorService.getDaysOfMonth(this.currentYear, this.currentMonth);
 
-    this.remindersService.removeReminder.subscribe(r => {
-      if (r.previousDate) {
-        this.removeReminder(r);
-        this.addReminder(r);
+    this.subscriptions.add(
+      this.remindersService.removeReminder.subscribe(r => {
+        if (r.previousDate) {
+          this.removeReminder(r);
+          this.addReminder(r);
+        } else {
+          this.removeReminder(r);
+        }
+
         this.remindersService.reminderModified.next();
-      }
-    });
+      }));
   }
 
   getMonthName(): string {
@@ -73,25 +88,26 @@ export class CalendarComponent implements OnInit {
   }
 
   openDialog(): void {
-    const dialogRef = this.dialog.open(ReminderModalComponent, {
+    const dialogRef = this.dialog.open(ReminderModalComponent, <MatDialogConfig>{
       width: '320px',
+      disableClose: true
     });
 
     dialogRef.afterClosed().subscribe((result: IReminder) => {
-      this.addReminder(result);
-      this.remindersService.reminderModified.next();
+      if (result) {
+        this.addReminder(result);
+        this.remindersService.reminderModified.next();
+      }
     });
   }
 
-  removeReminder(reminder: IReminder) {
-    if (reminder.previousDate) {
-      let day = this.days.find(d => d.date.getFullYear() === reminder.previousDate.getFullYear() && d.date.getMonth() === reminder.previousDate.getMonth() && d.date.getDate() === reminder.previousDate.getDate());
-      day.reminders = day.reminders.filter(r => r.id !== reminder.id);
-
-    }
+  removeReminder(reminder: IReminder): void {
+    const date = reminder.previousDate !== undefined ? reminder.previousDate : reminder.date;
+    let day = this.days.find(d => d.date.getFullYear() === date.getFullYear() && d.date.getMonth() === date.getMonth() && d.date.getDate() === date.getDate());
+    day.reminders = day.reminders.filter(r => r.id !== reminder.id);
   }
 
-  addReminder(reminder: IReminder) {
+  addReminder(reminder: IReminder): void {
     const reminderDate = new Date(reminder.date);
     const day = this.days.find(d => d.date.getFullYear() === reminderDate.getFullYear() && d.date.getMonth() === reminderDate.getMonth() && d.date.getDate() === reminderDate.getDate());
     day.reminders = day.reminders || [];

@@ -5,7 +5,7 @@
       <span>Slab Scheduler</span>
       <span class="example-spacer"></span>
       
-      <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon" (click)="openDialog()">
+      <button mat-icon-button (click)="openDialog()" matTooltip="Add new reminder">
         <mat-icon>add</mat-icon>
       </button>
 </mat-toolbar>
@@ -15,7 +15,7 @@
     </div>
     <div class="calendar-container">
         <div class="day-name-container mat-body-2" *ngFor="let day of daysInWeek;">
-            {{day}}
+            <div>{{day}}</div> 
         </div>
         <div class="day-container" *ngFor="let day of days;" [ngClass]="getClass(day)">
             <div class="day-number">{{day.dayDateNumber}}</div>

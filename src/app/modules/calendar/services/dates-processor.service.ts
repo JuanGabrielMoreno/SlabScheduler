@@ -29,7 +29,6 @@ export class DatesProcessorService {
         this.setDaysLeftAtEnd(currentDate);
       }
     }
-
     return this.days;
   }
 
@@ -74,7 +73,7 @@ export class DatesProcessorService {
 
   private addNewDate(date: Date): void {
     this.days.push({
-      date: date,
+      date: new Date(date),
       dayNumber: <daysOfWeek>date.getDay(),
       dayDateNumber: date.getDate(),
       monthNumber: <monthsOfYear>(date.getMonth())

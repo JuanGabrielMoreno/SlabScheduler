@@ -1,6 +1,6 @@
 <div class="reminders-viewer-container">
     <div *ngFor="let reminder of orderedReminders" [ngStyle]="{'background-color': reminder?.color}" class="mat-small reminder-preview" >
-        <div>
+        <div [matTooltip]="getReminderDescription(reminder)">
             {{getReminderDescription(reminder)}}
         </div>
         <div>

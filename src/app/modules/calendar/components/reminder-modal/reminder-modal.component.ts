@@ -7,7 +7,7 @@ import { ICountry } from '../../services/ICountry';
 import { RemindersService } from '../../services/reminders.service';
 import { IReminder } from '../calendar/IRemainder';
 import { IReminderModalData } from './IReminder-modal-data';
-import { debounceTime, map, mergeMap, startWith, switchMap } from 'rxjs/operators';
+import { debounceTime, switchMap } from 'rxjs/operators';
 import { WeatherService } from '../../services/weather.service';
 import { IWeatherData } from '../../services/IWeatherData';
 
@@ -50,15 +50,20 @@ export class ReminderModalComponent implements OnInit {
     private weatherService: WeatherService
   ) { }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.loadFormControls();
     if (this.data) {
       this.titleCtrl.setValue(this.data.reminder.title);
       this.dateCtrl.setValue(this.data.reminder.date);
       this.hoursCtrl.setValue(this.data.reminder.date.getHours());
       this.minutesCtrl.setValue(this.data.reminder.date.getMinutes());
+      this.countriesCtrl.setValue(this.data.reminder.countryCode);
+      this.citiesCtrl.setValue(this.data.reminder.cityCode);
       this.color = this.data.reminder.color;
+
+      this.queryWeather(<ICountry>{ name: this.data.reminder.cityCode })
     }
+
     this.hours = this.getNumerArray(23);
     this.minutes = this.getNumerArray(59);
 
@@ -81,7 +86,7 @@ export class ReminderModalComponent implements OnInit {
     });
   }
 
-  getNumerArray(maxNumber: number) {
+  getNumerArray(maxNumber: number): number[] {
     let arrHours = [];
     for (let index = 0; index <= maxNumber; index++) {
       arrHours.push(index);
@@ -90,23 +95,21 @@ export class ReminderModalComponent implements OnInit {
     return arrHours;
   }
 
-  addReminder() {
+  addReminder(): void {
     this.form.ngSubmit.next(this.form);
   }
 
-  onSubmit(form: NgForm) {
-    const title = this.titleCtrl.value;
+  onSubmit(): void {
     const date = new Date(this.dateCtrl.value);
     date.setHours(this.hoursCtrl.value, this.minutesCtrl.value);
-    const color = this.color;
 
     let reminder: IReminder = {
       id: Date.now(),
-      cityCode: '',
-      countryCode: '',
-      color: color,
+      cityCode: this.citiesCtrl.value,
+      countryCode: this.countriesCtrl.value,
+      color: this.color,
       date: date,
-      title: title
+      title: this.titleCtrl.value
     };
 
     if (this.data) {
@@ -119,19 +122,25 @@ export class ReminderModalComponent implements OnInit {
       this.remindersService.removeReminder.next(reminder);
     }
 
-
-
     this.dialogRef.close(reminder);
   }
 
-  queryWeather(selectedCity: ICountry) {
+  queryWeather(selectedCity: ICountry): void {
     this.weatherService.getWheatherByCity(selectedCity.name).subscribe(x => {
-      console.log(x);
       if (x.weather) {
         if (x.weather.length > 0) {
           this.cityWeather = x.weather[0];
         }
       }
     });
+  }
+
+  deleteReminder(): void {
+    if (this.data) {
+      if (confirm('Do you want to delete the reminder?')) {
+        this.remindersService.removeReminder.next(this.data.reminder);
+        this.dialogRef.close();
+      }
+    }
   }
 }
