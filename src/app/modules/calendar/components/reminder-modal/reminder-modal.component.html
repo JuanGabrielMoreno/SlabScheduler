@@ -2,7 +2,6 @@
     <mat-card-header>
         <mat-card-title>Add new Reminder</mat-card-title>
     </mat-card-header>
-
     <mat-card-content>
         <div class="reminder-form-container">
             <form #form="ngForm" (ngSubmit)="onSubmit()" [formGroup]="FormGrp">
@@ -17,7 +16,6 @@
                     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                     <mat-datepicker #picker></mat-datepicker>
                 </mat-form-field>
-
                 <mat-form-field appearance="fill">
                     <mat-label>HH</mat-label>
                     <mat-select formControlName="hoursCtrl">
@@ -30,13 +28,10 @@
                         <mat-option *ngFor="let minute of minutes" [value]="minute">{{minute}}</mat-option>
                     </mat-select>
                 </mat-form-field>
-
-
                 <mat-form-field appearance="fill">
                     <input matInput formControlName="colorInput" [(colorPicker)]="color" [style.background]="color"
                         placeholder="Select color" />
                 </mat-form-field>
-
                 <mat-form-field class="example-full-width">
                     <mat-label>Country</mat-label>
                     <input type="text" placeholder="Type to search" matInput formControlName="countriesCtrl"
@@ -47,7 +42,6 @@
                         </mat-option>
                     </mat-autocomplete>
                 </mat-form-field>
-
                 <mat-form-field class="example-full-width">
                     <mat-label>City</mat-label>
                     <input type="text" placeholder="Type to search" matInput formControlName="citiesCtrl"
@@ -59,7 +53,6 @@
                         </mat-option>
                     </mat-autocomplete>
                 </mat-form-field>
-
             </form>
         </div>
         <div class="weather-viewer" *ngIf="cityWeather != undefined">
@@ -69,7 +62,6 @@
                 <div class="description mat-caption">{{cityWeather.description}}</div>
             </div>
         </div>
-
     </mat-card-content>
     <mat-card-actions>
         <button mat-icon-button [color]="warn" *ngIf="data" (click)="deleteReminder()" matTooltip="Delete">

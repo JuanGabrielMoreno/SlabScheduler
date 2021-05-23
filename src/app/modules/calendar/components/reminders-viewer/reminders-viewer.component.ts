@@ -21,8 +21,6 @@ export class RemindersViewerComponent implements OnInit {
     public dialog: MatDialog,
     private remindersService: RemindersService) { }
 
-
-
   ngOnInit() {
     this.remindersService.reminderModified.subscribe(() => {
       if (this.day.reminders) {

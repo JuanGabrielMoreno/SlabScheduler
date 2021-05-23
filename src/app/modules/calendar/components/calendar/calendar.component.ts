@@ -103,15 +103,28 @@ export class CalendarComponent implements OnInit, OnDestroy {
 
   removeReminder(reminder: IReminder): void {
     const date = reminder.previousDate !== undefined ? reminder.previousDate : reminder.date;
-    let day = this.days.find(d => d.date.getFullYear() === date.getFullYear() && d.date.getMonth() === date.getMonth() && d.date.getDate() === date.getDate());
+    let day = this.getDayByDate(date);
     day.reminders = day.reminders.filter(r => r.id !== reminder.id);
   }
 
   addReminder(reminder: IReminder): void {
     const reminderDate = new Date(reminder.date);
-    const day = this.days.find(d => d.date.getFullYear() === reminderDate.getFullYear() && d.date.getMonth() === reminderDate.getMonth() && d.date.getDate() === reminderDate.getDate());
+    const day = this.getDayByDate(reminderDate);
     day.reminders = day.reminders || [];
     day.reminders.push(reminder);
+  }
+
+  removeRemindersByDay(day: IDay): void {
+    if (confirm('Do you want to delete all reminders for this day?')) {
+      let currentDay = this.getDayByDate(day.date);
+      currentDay.reminders = [];
+      this.remindersService.reminderModified.next();
+    }
+  }
+
+
+  getDayByDate(date: Date): IDay {
+    return this.days.find(d => d.date.getFullYear() === date.getFullYear() && d.date.getMonth() === date.getMonth() && d.date.getDate() === date.getDate());
   }
 
 }

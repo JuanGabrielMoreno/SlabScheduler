@@ -11,7 +11,7 @@ export class DatesProcessorService {
   constructor() { }
 
   public getDaysOfMonth(year: number, month: number): IDay[] {
-    const currentDate = new Date(year, month +1, 0);
+    const currentDate = new Date(year, month + 1, 0);
     const currentYear = currentDate.getFullYear();
     const currentMonth = (<monthsOfYear>(currentDate.getMonth()));
     const daysInMonthCounter = currentDate.getDate();
@@ -32,7 +32,7 @@ export class DatesProcessorService {
     return this.days;
   }
 
-  private setDaysLeftAtBeginin(initialDate: Date) {
+  private setDaysLeftAtBeginin(initialDate: Date): void {
     let currentDay = initialDate.getDay();
     let isSunday = initialDate.getDay() === 0;
 
@@ -53,7 +53,7 @@ export class DatesProcessorService {
   }
 
 
-  private setDaysLeftAtEnd(initialDate: Date) {
+  private setDaysLeftAtEnd(initialDate: Date): void {
     let currentDay = initialDate.getDay();
     let isSaturday = initialDate.getDay() === 6;
 

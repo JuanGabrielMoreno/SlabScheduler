@@ -20,7 +20,7 @@ import { IWeatherData } from '../../services/IWeatherData';
 export class ReminderModalComponent implements OnInit {
 
   FormGrp: FormGroup = new FormGroup({});
-  titleCtrl = new FormControl('', [Validators.required]);
+  titleCtrl = new FormControl('', [Validators.required, Validators.maxLength(30)]);
   dateCtrl = new FormControl(null, [Validators.required]);
   hoursCtrl = new FormControl();
   minutesCtrl = new FormControl();

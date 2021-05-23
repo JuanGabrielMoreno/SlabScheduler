@@ -5,7 +5,7 @@
 
 .example-spacer {
     flex: 1 1 auto;
-  }
+}
 
 .component-container {
     .title {
@@ -26,17 +26,31 @@
             color           : #FFF;
             background-color: @header-bg-color;
             text-align      : center;
+            display         : flex;
+            flex-direction  : row;
         }
 
         .day-container {
-            border  : 1px solid @border-color;
-            width   : @cells-width;
-            height  : 70px;
+            border    : 1px solid @border-color;
+            width     : @cells-width;
+            height    : 70px;
             overflow-x: hidden;
             overflow-y: auto;
 
             .day-number {
                 margin: 5px;
+            }
+
+            .day-container-header {
+                display       : flex;
+                flex-direction: row;
+                justify-content: space-between;
+                font-size     : 15px;
+
+                mat-icon {
+                    font-size : 15px;
+                    margin-top: -10px;
+                }
             }
 
         }
@@ -50,7 +64,7 @@
         }
 
         .day-container.weekend-day:not(.disabled-day) {
-            color:rgb(102 135 161);
+            color: rgb(102 135 161);
         }
 
         .day-container:not(.disabled-day) {

@@ -1,13 +1,13 @@
 <mat-toolbar>
     <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
         <mat-icon>menu</mat-icon>
-      </button>
-      <span>Slab Scheduler</span>
-      <span class="example-spacer"></span>
-      
-      <button mat-icon-button (click)="openDialog()" matTooltip="Add new reminder">
+    </button>
+    <span>Slab Scheduler</span>
+    <span class="example-spacer"></span>
+
+    <button mat-icon-button (click)="openDialog()" matTooltip="Add new reminder">
         <mat-icon>add</mat-icon>
-      </button>
+    </button>
 </mat-toolbar>
 <div class="component-container">
     <div class="mat-title title">
@@ -15,11 +15,17 @@
     </div>
     <div class="calendar-container">
         <div class="day-name-container mat-body-2" *ngFor="let day of daysInWeek;">
-            <div>{{day}}</div> 
+            <div>{{day}}</div>
         </div>
         <div class="day-container" *ngFor="let day of days;" [ngClass]="getClass(day)">
-            <div class="day-number">{{day.dayDateNumber}}</div>
-            <app-reminders-viewer [day]="day"></app-reminders-viewer>    
+            <div class="day-container-header">
+                <div class="day-number">{{day.dayDateNumber}}</div>
+                <button *ngIf="day.reminders?.length" mat-icon-button color="warn" matTooltip="Remove all remiders" (click)="removeRemindersByDay(day)">
+                    <mat-icon>delete</mat-icon>
+                </button>
+            </div>
+
+            <app-reminders-viewer [day]="day"></app-reminders-viewer>
         </div>
     </div>
 </div>
